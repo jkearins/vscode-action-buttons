@@ -45,7 +45,7 @@ const init = async (context: vscode.ExtensionContext) => {
 	if (commands.length) {
 		const terminals: { [name: string]: vscode.Terminal } = {};
 		commands.forEach(
-			({ cwd, command, name, tooltip, color, singleInstance, focus, useVsCodeApi, args, ignoreCwd, ignoreClear, extraCommands, terminalName }: CommandOpts) => {
+			({ cwd, command, name, tooltip, color, singleInstance, focus, useVsCodeApi, args, ignoreCwd, ignoreClear, extraCommands, terminalName, timeoutAfterCreate }: CommandOpts) => {
 				const vsCommand = `extension.${name.replace(' ', '')}`;
 
 				const disposable = registerCommand(vsCommand, async () => {
@@ -101,6 +101,7 @@ const init = async (context: vscode.ExtensionContext) => {
 						vscode.commands.executeCommand(command, ...(args || []));
 					} else {
 						// find terminal or create new one
+						let justCreated = false;
 						let doClear = true;
 						let assocTerminal;
 						if (terminalName) {
@@ -108,18 +109,21 @@ const init = async (context: vscode.ExtensionContext) => {
 							assocTerminal = vscode.window.terminals.find(x => x.name === terminalName);
 							if (!assocTerminal) {
 								assocTerminal = vscode.window.createTerminal(ignoreCwd ? {name: terminalName} : {name: terminalName, cwd: vars.cwd });
+								justCreated = true;
 							}
 						} else {
 							// basic features
 							assocTerminal = terminals[vsCommand];
 							if (!assocTerminal) {
 								assocTerminal = vscode.window.createTerminal(ignoreCwd ? {name} : {name, cwd: vars.cwd });
+								justCreated = true;
 								terminals[vsCommand] = assocTerminal;
 							} else {
 								if (singleInstance) {
 									delete terminals[vsCommand];
 									assocTerminal.dispose();
 									assocTerminal = vscode.window.createTerminal({ name, cwd: vars.cwd });
+									justCreated = true;
 									terminals[vsCommand] = assocTerminal;
 									doClear = false;
 								} else {
@@ -128,6 +132,18 @@ const init = async (context: vscode.ExtensionContext) => {
 							}
 						}
 						if (assocTerminal) {
+							if (justCreated) {
+								let timeout = timeoutAfterCreate || 0;
+								if (timeout < 0) {
+									timeout = 0;
+								}
+								if (timeout > 30000) {
+									timeout = 30000;
+								}
+								if (timeout) {
+									await new Promise(resolve => setTimeout(resolve, timeout));
+								}
+							}
 							if (doClear && !ignoreClear) {
 								assocTerminal.sendText('clear');
 							}

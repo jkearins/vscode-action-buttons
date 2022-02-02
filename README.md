@@ -131,6 +131,8 @@ The extension is inspired by [vscode-action-buttons](https://github.com/seunlanl
     * User defined config options can also be used in commands in form like `${var}`.
 * 🔥 **terminalName**
     * Specifies the terminal name in which the command(s) to be executed. If there is no runnnig terminal with such name than new terminal with name `terminalName` will be created. Defaults to empty string.
+* 🔥 **timeoutAfterCreate**
+    * Specifies timeout in milliseconds between creating a new terminal and sending the command(s) to it. If terminal already exists no timeout inserted.
 
 ## Config Vars
 

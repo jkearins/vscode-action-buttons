@@ -12,6 +12,7 @@ export interface CommandOpts {
 	ignoreClear?: boolean;
 	extraCommands?: string[];
 	terminalName: string;
+	timeoutAfterCreate: number;
 }
 
 export interface ButtonOpts {
