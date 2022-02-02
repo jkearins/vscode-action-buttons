@@ -2,7 +2,8 @@
 	"name": "action-buttons-ext",
 	"displayName": "VSCode Action Buttons Ext",
 	"description": "Add customizable buttons to the status bar to execute commands in terminal or short-cut actions",
-	"version": "0.1.0",
+	"version": "0.1.1",
+	"icon": "images/logo-128.png",
 	"license": "SEE LICENSE IN LICENSE",
 	"publisher": "jkearins",
 	"bugs": {
@@ -124,7 +125,12 @@
 									},
 									"terminalName": {
 										"type": "string",
-										"markdownDescription": "Specifies the terminal name in which the command(s) to be executed\n\nIf there is no runnnig terminal with such name than new terminal with name `terminalName` will be created"
+										"markdownDescription": "Specifies the terminal name in which the command(s) to be executed\n\nIf there is no runnig terminal with such name than new terminal with name `terminalName` will be created"
+									},
+									"timeoutAfterCreate": {
+										"type": "number",
+										"default": 0,
+										"markdownDescription": "Specifies timeout in milliseconds between creating a new terminal and sending a command to it\n\nIf terminal already exists no timeout inserted"
 									}
 								}
 							}
