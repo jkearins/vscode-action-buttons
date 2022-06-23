@@ -23,7 +23,7 @@ export const buildConfigFromPackageJson = async (defaultColor: string) => {
 
 	return Object.keys(scripts).map(key => ({
 		command: `npm run ${key}`,
-		color: defaultColor || 'white',
+		color: defaultColor || 'statusBar.foreground',
 		name: key,
 		singleInstance: true
 	})) as CommandOpts[];

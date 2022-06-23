@@ -10,7 +10,7 @@ const disposables: vscode.Disposable[] = [];
 const init = async (context: vscode.ExtensionContext) => {
 	disposables.forEach(btn => btn.dispose());
 	const config = vscode.workspace.getConfiguration('actionButtons');
-	const defaultColor = config.get<string>('defaultColor') || 'white';
+	const defaultColor = config.get<string>('defaultColor') || 'statusBar.foreground';
 	const reloadButton = config.get<string>('reloadButton');
 	const loadNpmCommands = config.get<boolean>('loadNpmCommands') !== false;
 	const cmds = config.get<CommandOpts[]>('commands');
