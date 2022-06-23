@@ -47,7 +47,7 @@
 					"additionalProperties": false,
 					"default": {
 						"commands": [],
-						"defaultColor": "white",
+						"defaultColor": "statusBar.foreground",
 						"reloadButton": "↻",
 						"loadNpmCommands": false
 					},
